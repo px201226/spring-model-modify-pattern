@@ -16,9 +16,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity @Getter
 @DynamicUpdate
+//@Where(clause = "ROW_STS_CD = 'U'")
 @NoArgsConstructor @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(builderMethodName = "entityBuilder", toBuilder = true) @IdClass(BizCustId.class)
-public class BizCustDtl {
+public class BizCustDtl extends BaseEntity {
 
 
 	@Id @Column(name = "BIZ_GROUP_NO", nullable = false)

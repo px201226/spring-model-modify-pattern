@@ -17,29 +17,39 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 @Entity @Getter
 @DynamicUpdate
 @NoArgsConstructor @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@FilterDef(name = "RowStatusFilter",
+		parameters = @ParamDef(name = "rowStatusCode", type = "string"),
+		defaultCondition = "row_sts_cd = U"
+)
+@Filter(name = "RowStatusFilter", condition = "row_sts_cd = :rowStatusCode")
 @Builder(builderMethodName = "entityBuilder", toBuilder = true) @IdClass(BizCustId.class)
-public class BizCust {
+public class BizCust extends BaseEntity {
 
-	@Id @Column(name = "BIZ_GROUP_NO", nullable = false)
+	@Id @Column(name = "BIZ_GROUP_NO")
 	@EqualsAndHashCode.Include
 	private Long bizGroupNo; // 사업그룹번호
 
-	@Id @Column(name = "BIZ_CD", length = 5, nullable = false)
+	@Id @Column(name = "BIZ_CD", length = 5)
 	@EqualsAndHashCode.Include
 	private String bizCd; // 사업자코드
 
-	@Id @Column(name = "CUST_CD", nullable = false)
+	@Id @Column(name = "CUST_CD")
 	@EqualsAndHashCode.Include
 	private Integer custCd; // 거래처코드
 
-	@Column(name = "CUST_NM", length = 50, nullable = false)
+	@Column(name = "CUST_NM", length = 50)
 	private String custNm; // 거래처명
 
-	@Column(name = "DISPLAY_CUST_CD", length = 14, nullable = false)
+	private boolean deleted;
+
+	@Column(name = "DISPLAY_CUST_CD", length = 14)
 	private String displayCustCd; // 노출거래처코드
 
 	@Column(name = "SALES_EMPLOY_CD", length = 10)
@@ -48,10 +58,10 @@ public class BizCust {
 	@Column(name = "DELIVERY_EMPLOY_CD", length = 10)
 	private Integer deliveryEmployCd; // 배송사원코드
 
-	@Column(name = "OWNER_TEL_NO", length = 20, nullable = false)
+	@Column(name = "OWNER_TEL_NO", length = 20)
 	private String ownerTelNo; // 대표전화번호
 
-	@Column(name = "MARKETB_PAY_USE_YN", length = 1, nullable = false) @Enumerated(EnumType.STRING)
+	@Column(name = "MARKETB_PAY_USE_YN", length = 1) @Enumerated(EnumType.STRING)
 	private UseYn marketbPayUseYn; // 마켓봄결제사용여부 NOTE: 매입처일때 default N
 
 	@Column(name = "MARKETB_PAY_CREDIT_CARD_YN", length = 1) @Enumerated(EnumType.STRING) @Default
@@ -66,38 +76,38 @@ public class BizCust {
 	@Column(name = "CUST_SECTION_CD")
 	private Integer custSectionCd; // 거래처분류코드
 
-	@Column(name = "APPLY_TRADE_GRADE_CD", length = 4, nullable = false)
+	@Column(name = "APPLY_TRADE_GRADE_CD", length = 4)
 	private String applyTradeGradeCd; // 적용거래등급코드
 
-	@Column(name = "AGENCY_CUST_YN", length = 1, nullable = false) @Enumerated(EnumType.STRING)
+	@Column(name = "AGENCY_CUST_YN", length = 1) @Enumerated(EnumType.STRING)
 	private UseYn agencyCustYn; // 대리점거래처여부 NOTE: 매입처일때 default N
 
 	@Column(name = "HEAD_OFFICE_YN", length = 1) @Enumerated(EnumType.STRING) @NotNull
 	@Default
 	private UseYn headOfficeYn = UseYn.N; // 본사여부
 
-	@Column(name = "BIZ_NM", length = 70, nullable = false)
+	@Column(name = "BIZ_NM", length = 70)
 	private String bizNm; // 사업자명
 
-	@Column(name = "BIZ_NO", length = 10, nullable = false)
+	@Column(name = "BIZ_NO", length = 10)
 	private String bizNo; // 사업자번호
 
 	@Column(name = "SUB_BIZ_PLACE_NO", length = 4)
 	private String subBizPlaceNo; // 종사업장번호
 
-	@Column(name = "OWNER_NM", length = 30, nullable = false)
+	@Column(name = "OWNER_NM", length = 30)
 	private String ownerNm; // 대표자명
 
 	@Column(name = "COMPANY_REGIST_NO", length = 13)
 	private String companyRegistNo; // 법인등록번호
 
-	@Column(name = "BIZ_PLACE_ZIP_NO", length = 6, nullable = false)
+	@Column(name = "BIZ_PLACE_ZIP_NO", length = 6)
 	private String bizPlaceZipNo; // 사업장우편번호(배송용 주소)
 
-	@Column(name = "BIZ_PLACE_ADDR", length = 100, nullable = false)
+	@Column(name = "BIZ_PLACE_ADDR", length = 100)
 	private String bizPlaceAddr; // 사업장주소(배송용 주소)
 
-	@Column(name = "BIZ_PLACE_ADDR_DETAIL", length = 150, nullable = false)
+	@Column(name = "BIZ_PLACE_ADDR_DETAIL", length = 150)
 	private String bizPlaceAddrDetail; // 사업장주소상세(배송용 주소)
 
 	@Column(name = "BIZ_PLACE_LEGALDONG_CD", length = 10)
