@@ -2,34 +2,29 @@ package com.example.mvcbestpractice.entity;
 
 import com.example.mvcbestpractice.common.UseYn;
 import com.sun.istack.NotNull;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.Transient;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 
 @Entity @Getter
 @DynamicUpdate
 @NoArgsConstructor @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@FilterDef(name = "RowStatusFilter",
-		parameters = @ParamDef(name = "rowStatusCode", type = "string"),
-		defaultCondition = "row_sts_cd = U"
-)
-@Filter(name = "RowStatusFilter", condition = "row_sts_cd = :rowStatusCode")
-@Builder(builderMethodName = "entityBuilder", toBuilder = true) @IdClass(BizCustId.class)
+@SuperBuilder(builderMethodName = "entityBuilder", toBuilder = true) @IdClass(BizCustId.class)
 public class BizCust extends BaseEntity {
 
 	@Id @Column(name = "BIZ_GROUP_NO")
@@ -53,7 +48,7 @@ public class BizCust extends BaseEntity {
 	private String displayCustCd; // 노출거래처코드
 
 	@Column(name = "SALES_EMPLOY_CD", length = 10)
-	private Integer salesEmployCd; // 영업사원코드
+	private Integer salesEmployCd; // e사원코드
 
 	@Column(name = "DELIVERY_EMPLOY_CD", length = 10)
 	private Integer deliveryEmployCd; // 배송사원코드
@@ -113,10 +108,11 @@ public class BizCust extends BaseEntity {
 	@Column(name = "BIZ_PLACE_LEGALDONG_CD", length = 10)
 	private String bizPlaceLegalDongCd; // 법정동/법정리코드(배송용 주소)
 
-	/* ============ <flag변수> ============ */
-	@Transient @Default
-	private boolean isChangeUnitPriceApply = false; // 적용거래등급코드 변경여부.
 
-	@Transient @Default
-	private boolean isChangeApplyTradeGradeCd = false; // 단가적용코드 변경여부.
+	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL) // OneToOne
+	@JoinColumn(name = "BIZ_GROUP_NO", referencedColumnName = "BIZ_GROUP_NO", insertable = false, updatable = false)
+	@JoinColumn(name = "BIZ_CD", referencedColumnName = "BIZ_CD", insertable = false, updatable = false)
+	@JoinColumn(name = "CUST_CD", referencedColumnName = "CUST_CD", insertable = false, updatable = false)
+	private BizCustDtl bizCustDtl;
+
 }

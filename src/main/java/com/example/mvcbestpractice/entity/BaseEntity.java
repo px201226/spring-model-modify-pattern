@@ -7,7 +7,11 @@ import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -15,6 +19,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
+@Getter
+@SuperBuilder(toBuilder = true)
+@AllArgsConstructor @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
@@ -24,7 +31,7 @@ public class BaseEntity {
 	protected RowStatusCode rowStsCd = RowStatusCode.U; // ROW상태코드
 
 	@CreatedBy
-	@Column(name = "REG_NO", length = 20, nullable = false, updatable = false)
+	@Column(name = "REG_NO", length = 20, updatable = false)
 	@Setter
 	protected Long regNo = 1L; // 등록자번호
 
@@ -34,12 +41,12 @@ public class BaseEntity {
 	protected LocalDateTime regDt; // 등록일시
 
 	@LastModifiedBy
-	@Column(name = "UPD_NO", length = 20, nullable = false)
+	@Column(name = "UPD_NO", length = 20)
 	@Setter
 	protected Long updNo = 1L; // 수정자번호
 
 	@LastModifiedDate
-	@Column(name = "UPD_DT", nullable = false)
+	@Column(name = "UPD_DT")
 	@Setter
 	protected LocalDateTime updDt; // 수정일시
 }

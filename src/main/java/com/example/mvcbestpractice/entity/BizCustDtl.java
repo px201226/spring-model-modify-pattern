@@ -9,16 +9,16 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity @Getter
 @DynamicUpdate
 //@Where(clause = "ROW_STS_CD = 'U'")
 @NoArgsConstructor @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(builderMethodName = "entityBuilder", toBuilder = true) @IdClass(BizCustId.class)
+@SuperBuilder(builderMethodName = "entityBuilder", toBuilder = true) @IdClass(BizCustId.class)
 public class BizCustDtl extends BaseEntity {
 
 
