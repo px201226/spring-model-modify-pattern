@@ -4,6 +4,8 @@ package com.example.mvcbestpractice.service;
 import com.example.mvcbestpractice.controller.dto.BizCustDto;
 import com.example.mvcbestpractice.controller.dto.BizCustSearchCondition;
 import com.example.mvcbestpractice.controller.dto.BizCustWithDtlDto;
+import com.example.mvcbestpractice.controller.dto.UpdateBizCustDto;
+import com.example.mvcbestpractice.controller.mapper.BizCustMapper;
 import com.example.mvcbestpractice.entity.BizCust;
 import com.example.mvcbestpractice.entity.BizCustId;
 import com.example.mvcbestpractice.repository.BizCustRepository;
@@ -20,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class BizCustService {
 
 	private final BizCustRepository bizCustRepository;
+	private final BizCustMapper mapper;
 	private final EntityManager entityManager;
+
 
 	public List<BizCustDto> findAll(Long bizGroupNo, BizCustSearchCondition condition) {
 		return bizCustRepository.findAll(bizGroupNo, condition);
@@ -46,5 +50,16 @@ public class BizCustService {
 		} else {
 			return find.get().getCustCd() + 1;
 		}
+	}
+
+
+	public BizCust update(UpdateBizCustDto dto) {
+		BizCust entity = bizCustRepository.findById(new BizCustId(dto.getBizGroupNo(), dto.getBizCd(), dto.getCustCd())).get();
+		mapper.updateBizCustDtoToBizCust(dto, entity);
+		return bizCustRepository.save(entity);
+	}
+
+	public List<BizCust> findById(List<BizCustId> bizCustIds) {
+		return bizCustRepository.findAllById(bizCustIds);
 	}
 }

@@ -11,10 +11,11 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Entity @Getter
+@Entity @Getter @Setter
 @DynamicUpdate
 //@Where(clause = "ROW_STS_CD = 'U'")
 @NoArgsConstructor @AllArgsConstructor(access = AccessLevel.PRIVATE)

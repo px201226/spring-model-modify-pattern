@@ -18,12 +18,14 @@ import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Entity @Getter
+@Entity @Getter @Setter
 @DynamicUpdate
-@NoArgsConstructor @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder(builderMethodName = "entityBuilder", toBuilder = true) @IdClass(BizCustId.class)
 public class BizCust extends BaseEntity {
 

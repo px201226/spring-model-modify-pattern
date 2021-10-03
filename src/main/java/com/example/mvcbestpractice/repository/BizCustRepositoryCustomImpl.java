@@ -4,21 +4,21 @@ import static com.example.mvcbestpractice.entity.QBizCust.bizCust;
 import static com.example.mvcbestpractice.entity.QBizCustDtl.bizCustDtl;
 import static com.querydsl.core.types.Projections.constructor;
 
+import com.example.mvcbestpractice.common.RowStatusCode;
 import com.example.mvcbestpractice.controller.dto.BizCustDto;
 import com.example.mvcbestpractice.controller.dto.BizCustSearchCondition;
 import com.example.mvcbestpractice.controller.dto.BizCustWithDtlDto;
+import com.example.mvcbestpractice.entity.BizCust;
 import com.example.mvcbestpractice.entity.BizCustId;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Repository
-@RequiredArgsConstructor
-public class BizCustRepositoryCustomImpl implements BizCustRepositoryCustom {
+class BizCustRepositoryCustomImpl implements BizCustRepositoryCustom {
 
-	private final JPAQueryFactory queryFactory;
+	@Autowired
+	private JPAQueryFactory queryFactory;
 
 	@Override
 	public List<BizCustDto> findAll(Long bizGroupNo, BizCustSearchCondition condition) {
@@ -116,11 +116,32 @@ public class BizCustRepositoryCustomImpl implements BizCustRepositoryCustom {
 				.where(
 						bizCust.bizGroupNo.eq(bizCustId.getBizGroupNo()),
 						bizCust.bizCd.eq(bizCustId.getBizCd()),
-						bizCust.custCd.eq(bizCustId.getCustCd())
+						bizCust.custCd.eq(bizCustId.getCustCd()),
+						bizCust.rowStsCd.in(RowStatusCode.U)
 				)
 				.fetch();
 
 		return fetch;
+	}
+
+	@Override public void delete(Iterable<BizCustId> bizCustIds) {
+
+//		queryFactory
+//				.update(bizCust)
+//				.set(
+//						bizCust.rowStsCd, RowStatusCode.D
+//				)
+//				.where(
+//						bizCust.bizGroupNo.
+//				)
+	}
+
+	@Override
+	public List<BizCust> findAllById(Iterable<BizCustId> bizCustIds) {
+//		System.out.println("ddd");
+//		Predicate by = BizCustSpecification.by(bizCustIds);
+//		return Lists.newArrayList(bizCustRepository.findAll(by));
+		return null;
 	}
 
 	private BooleanBuilder getBooleanBuilderCondition(Long bizGroupNo, BizCustSearchCondition condition) {

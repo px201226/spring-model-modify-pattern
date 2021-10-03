@@ -7,6 +7,8 @@ import com.example.mvcbestpractice.ApplicationInitializer;
 import com.example.mvcbestpractice.controller.dto.BizCustDto;
 import com.example.mvcbestpractice.controller.dto.BizCustSearchCondition;
 import com.example.mvcbestpractice.controller.dto.BizCustWithDtlDto;
+import com.example.mvcbestpractice.controller.dto.UpdateBizCustDto;
+import com.example.mvcbestpractice.entity.BizCust;
 import com.example.mvcbestpractice.entity.BizCustId;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -67,4 +69,43 @@ class BizCustServiceTest {
 		assertEquals(bizCustService.nextCustCd(4L, "00001"), 1);
 
 	}
+
+
+	@Test
+	@DisplayName("mapper로 업데이트 테스트")
+	void test4() {
+
+		// given
+		String changeCustNm = "바뀐 거래처";
+		String changeetcTelNo1 = "010-1111-2222";
+		UpdateBizCustDto updateBizCustDto = UpdateBizCustDto.builder()
+				.bizGroupNo(1L)
+				.bizCd("00001")
+				.custCd(1)
+				.custNm(changeCustNm)
+				.etcTelNo1(changeetcTelNo1)
+				.build();
+
+		// when
+		BizCust update = bizCustService.update(updateBizCustDto);
+
+		// then
+		assertEquals(update.getCustNm(), changeCustNm);
+		assertEquals(update.getBizCustDtl().getEtcTelNo1(), changeetcTelNo1);
+
+	}
+
+	@Test
+	@DisplayName("findAllByid")
+	void test5() {
+
+		List<BizCustId> bizCustIds = List.of(
+				new BizCustId(1L, "00001", 1)
+		);
+
+		List<BizCust> byId = bizCustService.findById(bizCustIds);
+
+
+	}
+
 }
